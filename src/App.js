@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { useEffect } from "react";
+import WebGL from 'three/addons/capabilities/WebGL.js';
+
 import "./App.css";
 
 function App() {
@@ -24,14 +25,20 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function animate() {
     requestAnimationFrame( animate );
-    renderer.render( scene, camera );
+
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+
+    renderer.render( scene, camera );
   }
   
+  if (WebGL.isWebGLAvailable()) {
+    animate();
+  } else {
+    const warning = WebGL.getWebGLErrorMessage();
+    document.getElementsByClassName('App').appendChild(warning);
+  }
 
-
-  animate()
   return <div className="App">
 
   </div>;
